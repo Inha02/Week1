@@ -25,6 +25,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.week1.ui.theme.Week1Theme
 
 class MainActivity : ComponentActivity() {
@@ -34,58 +37,23 @@ class MainActivity : ComponentActivity() {
         setContent {
             Week1Theme {
                 Surface () {
-                    ContactView()
+                    NavView()
                 }
             }
         }
     }
 }
 
+
+
 @Composable
-fun ContactView() {
+fun NavView(){
+    val navController  = rememberNavController()
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        floatingActionButton = {
-            FloatingActionButton(
-                containerColor = Color.Cyan,
-                contentColor = Color.White,
-                onClick = {}
-            ) {
-            }
-        }
-    ) { innerpadding ->
-        Column (modifier = Modifier.padding(innerpadding)){
-
-            LazyColumn (modifier = Modifier.fillMaxSize()){
-                items(10){
-                    Surface (
-                        modifier = Modifier.padding(bottom = 8.dp),
-                        shadowElevation = 4.dp
-                    ){
-                        Row(modifier = Modifier
-                            .fillMaxWidth()
-                            .height(100.dp),
-                        ) {
-
-
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-
-
-
-
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Week1Theme {
-        ContactView()
+    NavHost(navController = navController, startDestination = Screen.Contact.route){
+        composable(Screen.Contact.route){ ContactView()}
+        composable(Screen.Gallery.route) { GalleryView()  }
+        composable(Screen.Diary.route) { DiaryView() }
     }
 }
+
