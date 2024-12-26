@@ -51,7 +51,7 @@ fun NavView(){
     val navController  = rememberNavController()
 
     NavHost(navController = navController, startDestination = Screen.Contact.route){
-        composable(Screen.Contact.route){ ContactView()}
+        composable(Screen.Contact.route){ ContactView(navController)}
         composable(Screen.Gallery.route) { GalleryView()  }
         composable(Screen.Diary.route) { DiaryView() }
     }
