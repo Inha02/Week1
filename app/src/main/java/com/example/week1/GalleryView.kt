@@ -4,8 +4,15 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AddPhotoAlternate
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -38,22 +45,39 @@ fun GalleryView(
     val contact = galleryViewModel.contactState.value
     val images = contact.images
 
-    Column(){
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2)
-        ) {
-            items(images.size)
-            {
-                Box(
-                    modifier = Modifier
-                        .aspectRatio(1f/1f)
-                        .border(2.dp, Color.Black)
-                ) {
+    Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(
+                containerColor = Color(0xFF7D8F69),
+                contentColor = Color.White,
+                onClick = {navController.navigate(Screen.Edit.route)}
+            ) {
+
+                Icon(Icons.Default.AddPhotoAlternate, "")
+            }
+        }
+    ) { innerPadding ->
+
+        Column(
+            modifier = Modifier.padding(innerPadding)
+        ){
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2)
+            ) {
+                items(10)
+                {
+                    Box(
+                        modifier = Modifier
+                            .aspectRatio(1f/1f)
+                            .border(2.dp, Color.Black)
+                    ) {
                         Text(id.toString())
 
+                    }
                 }
-            }
 
+            }
         }
     }
+
 }

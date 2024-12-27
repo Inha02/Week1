@@ -64,9 +64,9 @@ fun ContactView(navController: NavHostController, viewModel: ContactViewModel) {
                 Icon(Icons.Default.Add, "")
             }
         }
-    ) { innerpadding ->
+    ) { innerPadding ->
         Column (
-            modifier = Modifier.padding(innerpadding),
+            modifier = Modifier.padding(innerPadding),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ){

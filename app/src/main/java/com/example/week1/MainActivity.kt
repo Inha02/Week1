@@ -68,6 +68,7 @@ fun NavView(){
             )) { backStackEntry ->
             GalleryView(backStackEntry, navController, galleryViewModel)  }
         composable(Screen.Diary.route) { DiaryView() }
+        composable(Screen.Edit.route) { EditView(navController)  }
     }
 }
 
