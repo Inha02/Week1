@@ -55,6 +55,8 @@ dependencies {
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.gson)
     ksp(libs.androidx.room.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

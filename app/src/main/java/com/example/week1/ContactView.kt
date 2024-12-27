@@ -1,5 +1,6 @@
 package com.example.week1
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -22,14 +24,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.week1.data.Contact
 
 @Composable
-fun ContactView(navController: NavHostController) {
+fun ContactView(navController: NavHostController, viewModel: ContactViewModel) {
 
     var showDialog by remember { mutableStateOf(false) }
 
@@ -49,16 +55,20 @@ fun ContactView(navController: NavHostController) {
         Column (modifier = Modifier.padding(innerpadding)){
 
             LazyColumn (modifier = Modifier.fillMaxSize()){
-                items(10){
+                items(viewModel.contactState.value.contactList.size){ index ->
+                    val contact = viewModel.contactState.value.contactList[index]
                     Surface (
                         modifier = Modifier.padding(bottom = 8.dp),
                         shadowElevation = 4.dp
                     ){
                         Row(modifier = Modifier
-                            .fillMaxWidth()
-                            .height(100.dp),
+                            .fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Start
                         ) {
-
+                            Icon(Icons.Default.Phone, "", Modifier.padding(32.dp))
+                            Text(text = contact.name, modifier = Modifier.padding(16.dp))
+                            Text(text = contact.phone, modifier = Modifier.padding(16.dp))
                         }
                     }
                 }
@@ -70,10 +80,10 @@ fun ContactView(navController: NavHostController) {
         showDialog = showDialog,
         onDismiss = { showDialog = false },
         onAddContact = { name, phoneNumber ->
-            // 연락처를 저장하는 로직 or ViewModel 호출 등 처리
-            // 예: viewModel.addContact(name, phoneNumber)
+            // Room 데이터베이스에 연락처 저장
+            viewModel.addContact(Contact(name = name, phone = phoneNumber, images = emptyList()))
 
-            // 처리 후 다이얼로그 닫기
+            // 다이얼로그 닫기
             showDialog = false
         }
     )
@@ -128,4 +138,25 @@ fun AddContactAlertDialog(
             }
         )
     }
+}
+
+@Preview
+@Composable
+fun ContactPreview() {
+
+    Surface (
+        modifier = Modifier.padding(bottom = 8.dp),
+        shadowElevation = 4.dp
+    ){
+        Row(modifier = Modifier
+            .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
+            Icon(Icons.Default.Phone, "", Modifier.padding(32.dp))
+            Text(text = "박세준", modifier = Modifier.padding(16.dp))
+            Text(text = "010-4905-8098", modifier = Modifier.padding(16.dp))
+        }
+    }
+
 }

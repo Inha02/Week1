@@ -25,14 +25,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.week1.data.Graph
 import com.example.week1.ui.theme.Week1Theme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Graph.provide(this)
         enableEdgeToEdge()
         setContent {
             Week1Theme {
@@ -50,8 +53,10 @@ class MainActivity : ComponentActivity() {
 fun NavView(){
     val navController  = rememberNavController()
 
+    val contactViewModel: ContactViewModel = viewModel()
+
     NavHost(navController = navController, startDestination = Screen.Contact.route){
-        composable(Screen.Contact.route){ ContactView(navController)}
+        composable(Screen.Contact.route){ ContactView(navController, contactViewModel)}
         composable(Screen.Gallery.route) { GalleryView()  }
         composable(Screen.Diary.route) { DiaryView() }
     }

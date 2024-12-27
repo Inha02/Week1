@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
 import com.example.week1.Screen
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 abstract class ContactDao {
@@ -14,4 +15,7 @@ abstract class ContactDao {
 
     @Delete
     abstract suspend fun deleteContact(contact: Contact)
+
+    @Query("Select * from `contact-table`")
+    abstract fun getAllContacts(): Flow<List<Contact>>
 }
