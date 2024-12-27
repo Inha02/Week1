@@ -26,9 +26,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.week1.data.Graph
 import com.example.week1.ui.theme.Week1Theme
 
@@ -54,10 +56,17 @@ fun NavView(){
     val navController  = rememberNavController()
 
     val contactViewModel: ContactViewModel = viewModel()
+    val galleryViewModel: GalleryViewModel = viewModel()
 
     NavHost(navController = navController, startDestination = Screen.Contact.route){
         composable(Screen.Contact.route){ ContactView(navController, contactViewModel)}
-        composable(Screen.Gallery.route) { GalleryView()  }
+        composable(Screen.Gallery.route + "/{id}",
+            arguments = listOf(
+                navArgument("id"){
+                    type = NavType.StringType
+                }
+            )) { backStackEntry ->
+            GalleryView(backStackEntry, navController, galleryViewModel)  }
         composable(Screen.Diary.route) { DiaryView() }
     }
 }

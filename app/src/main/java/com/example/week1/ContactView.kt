@@ -91,7 +91,7 @@ fun ContactView(navController: NavHostController, viewModel: ContactViewModel) {
                         modifier = Modifier
                             .padding(8.dp)
                             .clip(RoundedCornerShape(16.dp))
-                            .clickable { navController.navigate(Screen.Gallery.route) },
+                            .clickable { navController.navigate(Screen.Gallery.route +"/${contact.id}") },
                         color = Color(0xFF634543)
                     ){
                         Row(modifier = Modifier

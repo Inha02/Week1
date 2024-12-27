@@ -8,25 +8,48 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavHostController
+import com.example.week1.data.Contact
 
 @Composable
-fun GalleryView(){
+fun GalleryView(
+    backStackEntry: NavBackStackEntry,
+    navController: NavHostController,
+    galleryViewModel: GalleryViewModel){
+
+
+
+
+    val id = backStackEntry.arguments?.getString("id")?.toIntOrNull() ?: -1
+
+    LaunchedEffect(key1 = id) {
+        if (id != -1) {
+            galleryViewModel.getContact(id)
+        }
+    }
+
+    val contact = galleryViewModel.contactState.value
+    val images = contact.images
+
     Column(){
-        Text(text = "연락처")
         LazyVerticalGrid(
             columns = GridCells.Fixed(2)
         ) {
-            items(count = 10)
+            items(images.size)
             {
                 Box(
                     modifier = Modifier
                         .aspectRatio(1f/1f)
                         .border(2.dp, Color.Black)
                 ) {
+                        Text(id.toString())
 
                 }
             }

@@ -14,4 +14,6 @@ class ContactRepository(private val contactDao: ContactDao) {
 
     fun getAllContacts(): Flow<List<Contact>> = contactDao.getAllContacts()
 
+    fun getContactByID(id: Int): Flow<Contact> = contactDao.getContactById(id)
+
 }

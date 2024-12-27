@@ -18,4 +18,9 @@ abstract class ContactDao {
 
     @Query("Select * from `contact-table`")
     abstract fun getAllContacts(): Flow<List<Contact>>
+
+    @Query("SELECT * FROM `contact-table` WHERE id = :id")
+    abstract fun getContactById(id: Int): Flow<Contact>
+
+
 }
