@@ -30,6 +30,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,6 +47,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import java.io.File
@@ -54,7 +56,21 @@ import java.util.Date
 import java.util.Objects
 
 @Composable
-fun EditView(navHostController: NavHostController) {
+fun EditView(navHostController: NavHostController,
+             backStackEntry: NavBackStackEntry,
+             editViewModel: EditViewModel) {
+
+    val id = backStackEntry.arguments?.getString("id")?.toIntOrNull() ?: -1
+
+    LaunchedEffect(key1 = id) {
+        if (id != -1) {
+            editViewModel.getContact(id)
+        }
+
+    }
+    val contact = editViewModel.contactState.value
+    var diaryState = editViewModel.diaryState.value
+
     val context = LocalContext.current
     val file = context.createImageFile()
     val uri = FileProvider.getUriForFile(
@@ -152,7 +168,11 @@ fun EditView(navHostController: NavHostController) {
 
         }
 
-        OutlinedTextField("",{})
+        OutlinedTextField(diaryState,
+            onValueChange = {
+                editViewModel.updateDiaryText(it)
+            }
+            )
 
         Row(){
             Button(
@@ -165,6 +185,20 @@ fun EditView(navHostController: NavHostController) {
 
             Button(
                 onClick = {
+
+                    val fileName = "image_${System.currentTimeMillis()}.jpg"
+
+                    val bitmap = editViewModel.getBitmapFromUri(context, ImageUri)
+                    val path = editViewModel.saveBitmapToInternalStorage(context, bitmap, fileName)
+
+
+                    val newContact = contact.copy(
+                        name = contact.name,
+                        id = contact.id,
+                        phone = contact.phone,
+                        images = contact.images + ImageComponent(imageUri = path, diary = diaryState)
+                    )
+                    editViewModel.updateContact(newContact)
                     navHostController.popBackStack()
                 }
             ) {

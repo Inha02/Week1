@@ -57,6 +57,8 @@ fun NavView(){
 
     val contactViewModel: ContactViewModel = viewModel()
     val galleryViewModel: GalleryViewModel = viewModel()
+    val editViewModel: EditViewModel = viewModel()
+    val diaryViewModel:DiaryViewModel = viewModel()
 
     NavHost(navController = navController, startDestination = Screen.Contact.route){
         composable(Screen.Contact.route){ ContactView(navController, contactViewModel)}
@@ -67,8 +69,23 @@ fun NavView(){
                 }
             )) { backStackEntry ->
             GalleryView(backStackEntry, navController, galleryViewModel)  }
-        composable(Screen.Diary.route) { DiaryView() }
-        composable(Screen.Edit.route) { EditView(navController)  }
+
+        composable(Screen.Diary.route + "/{imageUri}/{diary}",
+            arguments = listOf(
+                navArgument("imageUri"){ type = NavType.StringType},
+                navArgument("diary"){type = NavType.StringType}
+            )) { backStackEntry ->
+            DiaryView(backStackEntry,navController, diaryViewModel)
+        }
+
+        composable(Screen.Edit.route + "/{id}",
+            arguments = listOf(
+                navArgument("id"){
+                    type = NavType.StringType
+                }
+            )
+            ) { backStackEntry ->
+            EditView(navController, backStackEntry, editViewModel)  }
     }
 }
 

@@ -11,22 +11,24 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class GalleryViewModel(
+class DiaryViewModel(
     private val contactRepository: ContactRepository = Graph.contactRepository
-): ViewModel(){
+): ViewModel() {
 
     private val _contactState = mutableStateOf(Contact("","", emptyList(),0))
     val contactState : State<Contact> = _contactState
 
+    private val _diaryState = mutableStateOf("")
+    val diaryState: State<String> = _diaryState
+
     fun getContact(id:Int){
         viewModelScope.launch(Dispatchers.IO) {
             contactRepository.getContactByID(id).collect{
-                data->
+                    data->
                 withContext(Dispatchers.Main){
                     _contactState.value = data
                 }
             }
         }
     }
-
 }
