@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Camera
@@ -28,9 +29,13 @@ import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -113,20 +118,32 @@ fun EditView(navHostController: NavHostController,
         horizontalAlignment = Alignment.CenterHorizontally)
     {
 
-        Image(
-            painter = rememberAsyncImagePainter(ImageUri),
-            "",
-            contentScale = ContentScale.Fit,
-            modifier = Modifier.height(250.dp)
-        )
+        if (ImageUri == Uri.EMPTY){
+            Image(
+                painter = painterResource(R.drawable.daramgi),
+                "",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.height(250.dp)
+            )
+        }
+        else{
+            Image(
+                painter = rememberAsyncImagePainter(ImageUri),
+                "",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.height(250.dp)
+            )
+        }
+
+
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(8.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             Button(
                 shape = RectangleShape,
-                border = BorderStroke(1.dp, Color.LightGray),
+                border = BorderStroke(1.dp, Color(0xff8f7a79)),
                 colors = ButtonDefaults.buttonColors(Color.Transparent),
                 modifier = Modifier
                     .weight(1f)
@@ -147,13 +164,16 @@ fun EditView(navHostController: NavHostController,
                 Icon(
                     Icons.Default.CameraAlt,
                     contentDescription = null,
-                    tint = Color.Black
+                    tint = Color(0xff8f7a79)
                 )
 
             }
+
+            Spacer(Modifier.padding(4.dp))
+
             Button(
                 shape = RectangleShape,
-                border = BorderStroke(1.dp, Color.LightGray),
+                border = BorderStroke(1.dp, Color(0xff8f7a79)),
                 colors = ButtonDefaults.buttonColors(Color.Transparent),
                 modifier = Modifier
                     .weight(1f)
@@ -166,20 +186,47 @@ fun EditView(navHostController: NavHostController,
                 Icon(
                     Icons.Default.Image,
                     contentDescription = null,
-                    tint = Color.Black
+                    tint = Color(0xff8f7a79)
                 )
             }
 
         }
 
-        OutlinedTextField(diaryState,
-            onValueChange = {
-                editViewModel.updateDiaryText(it)
-            }
-            )
+        CustomDivider()
 
-        Row(){
+        TextField(
+            value = diaryState,
+            onValueChange = { editViewModel.updateDiaryText(it) },
+            placeholder = { Text("추억을 기록하세요") }, // Placeholder 텍스트
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                disabledContainerColor = Color.Transparent,
+                errorContainerColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+        )
+
+        HorizontalDivider(
+            modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+            thickness = 1.dp, // 원하는 두께 설정,
+            color = Color(0xFF8F7A79) // 8F7A79 색상
+        )
+
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(8.dp),
+
+        ){
             Button(
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xff8f7a79), // 버튼 배경색
+                    contentColor = Color.White // 텍스트 또는 아이콘 색상
+                ),
+                shape = RoundedCornerShape(16.dp),
                 onClick = {
                     navHostController.popBackStack()
                 }
@@ -187,24 +234,39 @@ fun EditView(navHostController: NavHostController,
                 Text("취소")
             }
 
+            Spacer(Modifier.weight(1f))
+
             Button(
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xff8f7a79), // 버튼 배경색
+                    contentColor = Color.White // 텍스트 또는 아이콘 색상
+                ),
+                shape = RoundedCornerShape(16.dp),
                 onClick = {
 
-                    val fileName = "image_${System.currentTimeMillis()}.jpg"
+                    if(ImageUri == Uri.EMPTY){
+                        Toast.makeText(context,"이미지를 추가해주세요", Toast.LENGTH_SHORT).show()
+                    }
+                    else{
+                        val fileName = "image_${System.currentTimeMillis()}.jpg"
 
-                    val bitmap = editViewModel.getBitmapFromUri(context, ImageUri)
-                    val path = editViewModel.saveBitmapToInternalStorage(context, bitmap, fileName)
+                        val bitmap = editViewModel.getBitmapFromUri(context, ImageUri)
+                        val path = editViewModel.saveBitmapToInternalStorage(context, bitmap, fileName)
 
 
-                    val newContact = contact.copy(
-                        name = contact.name,
-                        id = contact.id,
-                        phone = contact.phone,
-                        images = contact.images + ImageComponent(imageUri = path, diary = diaryState)
-                    )
-                    editViewModel.updateContact(newContact)
-                    navHostController.popBackStack()
-                }
+                        val newContact = contact.copy(
+                            name = contact.name,
+                            id = contact.id,
+                            phone = contact.phone,
+                            images = contact.images + ImageComponent(imageUri = path, diary = diaryState)
+                        )
+                        editViewModel.updateContact(newContact)
+                        navHostController.popBackStack()
+                    }
+
+
+                },
+
             ) {
                 Text("저장")
             }
