@@ -30,6 +30,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -156,21 +158,54 @@ fun AddContactAlertDialog(
         AlertDialog(
 
             onDismissRequest = { onDismiss() },
-            title = { Text(text = "연락처 추가") },
+            title = { Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Icon(
+                    painter = painterResource(id = R.drawable.acorn1), // 리소스 아이콘 로드
+                    contentDescription = null, // 콘텐츠 설명 (null로 설정 가능)
+                    modifier = Modifier.padding(start = 8.dp, end = 8.dp).size(20.dp),
+                    tint = Color(0xff634543),
+                )
+                Text(text = "연락처 추가", fontSize = 20.sp, color = Color(0xff634543))
+            }
+                    },
             text = {
                 // AlertDialog 내에서 필요한 입력 항목
-
-
                 Column {
-                    OutlinedTextField(
+
+                    TextField(
                         value = name,
-                        onValueChange = { name = it },
-                        label = { Text("이름") }
+                        onValueChange = { name = it},
+                        placeholder = { Text("이름", color = Color(0x99634543)) }, // Placeholder 텍스트
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            disabledContainerColor = Color.Transparent,
+                            errorContainerColor = Color.Transparent,
+                            focusedIndicatorColor = Color(0xff634543),
+                            unfocusedIndicatorColor = Color(0xff634543)
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
                     )
-                    OutlinedTextField(
+
+                    TextField(
                         value = phoneNumber,
-                        onValueChange = { phoneNumber = it },
-                        label = { Text("전화번호") }
+                        onValueChange = { phoneNumber = it},
+                        placeholder = { Text("전화번호", color = Color(0x99634543)) }, // Placeholder 텍스트
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            disabledContainerColor = Color.Transparent,
+                            errorContainerColor = Color.Transparent,
+                            focusedIndicatorColor = Color(0xff634543),
+                            unfocusedIndicatorColor = Color(0xff634543)
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
                     )
                 }
             },
@@ -181,12 +216,12 @@ fun AddContactAlertDialog(
                         onAddContact(name, phoneNumber)
                     }
                 ) {
-                    Text("추가")
+                    Text("추가", color = Color(0xff7d8f69))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { onDismiss() }) {
-                    Text("취소")
+                    Text("취소",color = Color(0xff7d8f69))
                 }
             }
         )
