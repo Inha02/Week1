@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -58,10 +59,16 @@ fun ContactView(navController: NavHostController, viewModel: ContactViewModel) {
             FloatingActionButton(
                 containerColor = Color(0xFF7D8F69),
                 contentColor = Color.White,
-                onClick = {showDialog =true}
+                onClick = {showDialog =true},
+                modifier = Modifier.size(60.dp)
             ) {
 
-                Icon(Icons.Default.Add, "")
+                Icon(
+                    painter = painterResource(id = R.drawable.acorn_plus), // 리소스 아이콘 로드
+                    contentDescription = null, // 콘텐츠 설명 (null로 설정 가능)
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp).size(30.dp),
+                    tint = Color.White,
+                )
             }
         }
     ) { innerPadding ->
@@ -97,9 +104,15 @@ fun ContactView(navController: NavHostController, viewModel: ContactViewModel) {
                         Row(modifier = Modifier
                             .fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Start
+                            horizontalArrangement = Arrangement.SpaceEvenly,
+
                         ) {
-                            Icon(Icons.Default.Phone, "", Modifier.padding(16.dp), tint = Color.White)
+                            Icon(
+                                painter = painterResource(id = R.drawable.acorn1), // 리소스 아이콘 로드
+                                contentDescription = null, // 콘텐츠 설명 (null로 설정 가능)
+                                modifier = Modifier.padding(start = 16.dp, end = 16.dp).size(20.dp),
+                                tint = Color.White,
+                            )
                             Text(text = contact.name, modifier = Modifier.padding(16.dp), color = Color.White)
                             Text(text = contact.phone, modifier = Modifier.padding(16.dp), color = Color.White)
                             Spacer(modifier = Modifier.weight(1f))
@@ -193,7 +206,11 @@ fun ContactPreview() {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-            Icon(Icons.Default.Phone, "", Modifier.padding(32.dp))
+            Icon(
+                painter = painterResource(id = R.drawable.acorn1), // 리소스 아이콘 로드
+                contentDescription = null, // 콘텐츠 설명 (null로 설정 가능)
+                modifier = Modifier.padding(32.dp)
+            )
             Text(text = "박세준", modifier = Modifier.padding(16.dp))
             Text(text = "010-4905-8098", modifier = Modifier.padding(16.dp))
         }

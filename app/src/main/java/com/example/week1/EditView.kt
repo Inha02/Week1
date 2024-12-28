@@ -20,6 +20,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material.icons.filled.CameraAlt
@@ -105,7 +107,9 @@ fun EditView(navHostController: NavHostController,
         }
     }
 
-    Column (modifier = Modifier.padding(bottom = 32.dp).fillMaxSize(),
+    val scrollState = rememberScrollState()
+
+    Column (modifier = Modifier.padding(bottom = 64.dp, top = 64.dp).fillMaxSize().verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally)
     {
 
@@ -113,7 +117,7 @@ fun EditView(navHostController: NavHostController,
             painter = rememberAsyncImagePainter(ImageUri),
             "",
             contentScale = ContentScale.Fit,
-            modifier = Modifier.height(300.dp)
+            modifier = Modifier.height(250.dp)
         )
 
         Row(
