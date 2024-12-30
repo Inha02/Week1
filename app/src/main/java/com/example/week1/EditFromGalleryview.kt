@@ -252,8 +252,25 @@ fun EditFromGalleryView(navHostController: NavHostController,
                 shape = RoundedCornerShape(16.dp),
                 onClick = {
 
-                    if(ImageUri == Uri.EMPTY){
-                        Toast.makeText(context,"이미지를 추가해주세요", Toast.LENGTH_SHORT).show()
+                    if(ImageUri == Uri.parse(contact.images[imageIndex].imageUri)){
+                        Toast.makeText(context,"텍스트만 수정되었습니다.", Toast.LENGTH_SHORT).show()
+                        val newImages = contact.images.mapIndexed{ index, imageComponent ->
+                            if( index == imageIndex){
+                                imageComponent.copy(diary = diaryState)
+                            }else{
+                                imageComponent
+                            }
+                        }
+
+                        val newContact = contact.copy(
+                            name = contact.name,
+                            id = contact.id,
+                            phone = contact.phone,
+                            images = newImages
+                        )
+                        editFromGalleryViewModel.updateContact(newContact)
+                        navHostController.popBackStack()
+                        navHostController.popBackStack()
                     }
                     else{
                         val fileName = "image_${System.currentTimeMillis()}.jpg"
@@ -279,6 +296,7 @@ fun EditFromGalleryView(navHostController: NavHostController,
                         editFromGalleryViewModel.updateContact(newContact)
                         navHostController.popBackStack()
                         navHostController.popBackStack()
+
                     }
 
 
