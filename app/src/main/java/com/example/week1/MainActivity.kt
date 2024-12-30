@@ -41,7 +41,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Week1Theme {
-                Surface () {
+                Surface (
+                    color = Color.White,
+                    modifier = Modifier.fillMaxSize()
+                ) {
                     NavView()
                 }
             }
@@ -58,6 +61,7 @@ fun NavView(){
     val contactViewModel: ContactViewModel = viewModel()
     val galleryViewModel: GalleryViewModel = viewModel()
     val editViewModel: EditViewModel = viewModel()
+    val editFromGalleryViewModel : EditFromGalleryViewModel = viewModel()
     val diaryViewModel:DiaryViewModel = viewModel()
 
     NavHost(navController = navController, startDestination = Screen.Contact.route){
@@ -70,10 +74,12 @@ fun NavView(){
             )) { backStackEntry ->
             GalleryView(backStackEntry, navController, galleryViewModel)  }
 
-        composable(Screen.Diary.route + "/{imageUri}/{diary}",
+        composable(Screen.Diary.route + "/{imageUri}/{diary}/{imageIndex}/{id}",
             arguments = listOf(
                 navArgument("imageUri"){ type = NavType.StringType},
-                navArgument("diary"){type = NavType.StringType}
+                navArgument("diary"){type = NavType.StringType},
+                navArgument("imageIndex"){type = NavType.StringType},
+                navArgument("id"){type = NavType.StringType}
             )) { backStackEntry ->
             DiaryView(backStackEntry,navController, diaryViewModel)
         }
@@ -86,6 +92,15 @@ fun NavView(){
             )
             ) { backStackEntry ->
             EditView(navController, backStackEntry, editViewModel)  }
+
+        composable( Screen.EditFromGallery.route + "/{id}/{imageIndex}",
+            arguments = listOf(
+                navArgument("id"){type = NavType.IntType},
+                navArgument("imageIndex"){type = NavType.IntType}
+            )) {
+             backStackEntry ->
+            EditFromGalleryView(navController, backStackEntry,editFromGalleryViewModel)
+        }
     }
 }
 

@@ -57,6 +57,7 @@ fun GalleryView(
     val images = contact.images
 
     Scaffold(
+        containerColor = Color.White,
         floatingActionButton = {
             FloatingActionButton(
                 containerColor = Color(0xFF7D8F69),
@@ -97,7 +98,7 @@ fun GalleryView(
                                 .padding(8.dp)
                                 .clip(RoundedCornerShape(16.dp))
                                 .clickable {
-                                    navController.navigate(Screen.Diary.route + "/${encodedUri}/${images[index].diary}")
+                                    navController.navigate(Screen.Diary.route + "/${encodedUri}/${images[index].diary}/${index}/${contact.id}")
                                 }
                         )
 

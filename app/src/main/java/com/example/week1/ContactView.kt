@@ -56,6 +56,7 @@ fun ContactView(navController: NavHostController, viewModel: ContactViewModel) {
     var showDialog by remember { mutableStateOf(false) }
 
     Scaffold(
+        containerColor = Color.White,
         modifier = Modifier.fillMaxSize(),
         floatingActionButton = {
             FloatingActionButton(

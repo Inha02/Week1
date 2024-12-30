@@ -31,4 +31,17 @@ class DiaryViewModel(
             }
         }
     }
+
+    fun updateContact(contact: Contact){
+
+        viewModelScope.launch(Dispatchers.IO) {
+            contactRepository.addContact(contact)
+        }
+
+    }
+
+
+
+
+
 }
