@@ -296,6 +296,7 @@ fun EditFromGalleryView(navHostController: NavHostController,
                         editFromGalleryViewModel.updateContact(newContact)
                         navHostController.popBackStack()
                         navHostController.popBackStack()
+                        navHostController.popBackStack()
 
                     }
 
