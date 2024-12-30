@@ -6,10 +6,12 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavHostController
 import com.example.week1.data.Contact
 import com.example.week1.data.ContactRepository
 import com.example.week1.data.Graph
@@ -31,13 +33,31 @@ class EditFromGalleryViewModel(
     private val _imageUriState = mutableStateOf(Uri.EMPTY)
     val imageUriState: State<Uri> = _imageUriState
 
-    suspend fun getContact(id: Int, index:Int) {
+
+    fun getContactIndex(id: Int, index:Int, navHostController: NavHostController) {
+
         viewModelScope.launch(Dispatchers.IO) {
             contactRepository.getContactByID(id).collect { data ->
                 withContext(Dispatchers.Main) {
                     _contactState.value = data
-                    _diaryState.value = data.images[index].diary
-                    _imageUriState.value = Uri.parse(data.images[index].imageUri)
+                    if (index >= 0 && index < _contactState.value.images.size)
+                    {
+                        _diaryState.value = data.images[index].diary
+                        _imageUriState.value = Uri.parse(data.images[index].imageUri)
+                    }else{
+                        navHostController.popBackStack()
+                    }
+
+                }
+            }
+        }
+    }
+
+    fun getContact(id:Int){
+        viewModelScope.launch(Dispatchers.IO) {
+            contactRepository.getContactByID(id).collect{ data->
+                withContext(Dispatchers.Main){
+                    _contactState.value = data
                 }
             }
         }

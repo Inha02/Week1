@@ -76,9 +76,10 @@ fun EditFromGalleryView(navHostController: NavHostController,
 
     LaunchedEffect(key1 = id) {
         if (id != -1) {
-            editFromGalleryViewModel.getContact(id, imageIndex)
+            // ViewModel의 getContact()를 호출하기 전에, index 유효성 검사
+            Log.d("imageindex", "${imageIndex}")
+            editFromGalleryViewModel.getContactIndex(id, imageIndex, navHostController)
         }
-
     }
 
 
@@ -294,7 +295,6 @@ fun EditFromGalleryView(navHostController: NavHostController,
                             images = newImages
                         )
                         editFromGalleryViewModel.updateContact(newContact)
-                        navHostController.popBackStack()
                         navHostController.popBackStack()
                         navHostController.popBackStack()
 

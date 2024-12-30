@@ -1,6 +1,7 @@
 package com.example.week1
 
 import android.net.Uri
+import android.util.Log
 import androidx.compose.animation.defaultDecayAnimationSpec
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -118,17 +119,7 @@ fun DiaryView(
                 shape = RoundedCornerShape(16.dp),
                 onClick = {
 
-                    val newImages = contact.images.filterIndexed { index, _ ->  index != imageIndex}
-
-                    val newContact = contact.copy(
-                        name = contact.name,
-                        id = contact.id,
-                        phone = contact.phone,
-                        images = newImages,
-                    )
-
-                    diaryViewModel.updateContact(newContact)
-                    navHostController.popBackStack()
+                   diaryViewModel.deleteImage(id, imageIndex, navHostController)
 
             }) {
                 Icon(Icons.Default.Delete, "",)
