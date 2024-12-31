@@ -128,7 +128,14 @@ fun ContactView(navController: NavHostController, viewModel: ContactViewModel) {
                     }
 
                 }
+
+                // 추가적인 빈 공간을 위한 Spacer
+                item {
+                    Spacer(modifier = Modifier.height(72.dp)) // 스크롤 가능하게 만드는 빈 공간
+                }
             }
+
+
         }
     }
 
